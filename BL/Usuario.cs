@@ -18,7 +18,9 @@ namespace BL
 
                     //var query = context.UsuarioGetAllDTO.FromSqlInterpolated($@"EXEC UsuarioGet {nombre}, {apellidoPaterno}, {apellidoMaterno}, {idRol}").ToList();
 
-                    var query = context.UsuarioGetAllDTO.FromSqlInterpolated($@"EXEC UsuarioGetAllView {nombre}, {apellidoPaterno}, {apellidoMaterno}, {idRol}").ToList();
+                    //var query = context.UsuarioGetAllDTO.FromSqlInterpolated($@"EXEC UsuarioGetAllView {nombre}, {apellidoPaterno}, {apellidoMaterno}, {idRol}").ToList();
+
+                    var query = context.UsuarioGetAllDTO.FromSqlInterpolated($@"EXEC UsuarioGetAllDynamic {nombre}, {apellidoPaterno}, {apellidoMaterno}, {idRol}").ToList();
 
 
 

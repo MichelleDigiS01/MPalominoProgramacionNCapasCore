@@ -13,6 +13,7 @@ namespace PL.Controllers
             usuario.Nombre = "";
             usuario.ApellidoPaterno = "";
             usuario.ApellidoMaterno = "";
+
             usuario.Rol = new ML.Rol(); 
             usuario.Rol.IdRol = 0;
 
