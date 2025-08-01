@@ -9,6 +9,7 @@
 <h1>Usuarios</h1>
 
 <div class="container">
+
     <div class="row">
         <div class="col-6">
             <button id="btnBusqueda" class="btn btn-info w-100">Busqueda</button>
@@ -19,63 +20,56 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class=" col-md-12">
 
-            <div class="card mt-2" id="busquedaForm" style="display: none;">
-                <h5 class="card-header">Busqueda</h5>
-                <div class="card-body">
+    @using (Html.BeginForm("GetAll", "Usuario", FormMethod.Post))
+    {
+        <div class="row">
+            <div class=" col-md-12">
+                <div class="card mt-2" id="busquedaForm" style="display: none;">
+                    <h5 class="card-header">Busqueda</h5>
+                    <div class="card-body">
 
-                    <div class="row">
-                        <div class="col-md-3 mt-2">
+                        <div class="row">
+                            <div class="col-md-3 mt-2">
+                                @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", placeholder = "Nombre", @id = "txtNombre" })
+                            </div>
+                            <div class="col-md-3 mt-2">
+                                @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control", placeholder = "Apellido Paterno", @id = "txtApellidoPaterno" })
+                            </div>
+                            <div class="col-md-3 mt-2">
+                                @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control", placeholder = "Apellido Materno", @id = "txtApellidoMaterno" })
+                            </div>
+                            <div class="col-md-3 mt-2">
+                                @Html.DropDownListFor(model => model.Rol.IdRol, new SelectList(Model.Rol.Rols, "IdRol", "Nombre"), "Seleccione un Rol", new { @class = "form-control" })
+                            </div>
+                        </div>
 
-                            @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", placeholder = "Nombre", @id = "txtNombre" })
+                        <div class="col-md-6 mt-2 offset-md-5">
+                            <button type="submit" class="btn btn-outline-success">Buscar</button>
+
+                            <button type="reset" id="btnCancelar" class="btn btn-outline-danger">Cancelar</button>
 
                         </div>
-                        <div class="col-md-3 mt-2">
 
-                            @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control", placeholder = "Apellido Paterno", @id = "txtApellidoPaterno" })
-                        </div>
-
-                        <div class="col-md-3 mt-2">
-
-                            @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control", placeholder = "Apellido Materno", @id = "txtApellidoMaterno" })
-
-                        </div>
-
-                        <div class="col-md-3 mt-2">
-
-                            @Html.DropDownListFor(model => model.Rol.IdRol, new SelectList(Model.Rol.Rols, "IdRol", "Nombre"), "Seleccione un Rol", new { @class = "form-control" })
-
-                        </div>
-                    </div>
-
-
-                    <div class="col-md-6 mt-2 offset-md-5">
-
-
-                        <button id="" class="btn btn-outline-success">Buscar</button>
-
-                        <button id="btnCancelar" class="btn btn-outline-danger">Cancelar</button>
 
                     </div>
-
-
                 </div>
+
             </div>
 
+            <div class=" col-md-12 mt-2">
+                @Html.ActionLink("+", "Form", "Usuario", new { IdUsuario = 0 }, new { @class = "btn btn-success" })
+            </div>
 
         </div>
 
-        <div class=" col-md-12 mt-2">
-            @Html.ActionLink("+", "Form", "Usuario", new { IdUsuario = 0 }, new { @class = "btn btn-success" })
-        </div>
+    }
 
 
-
-    </div>
+    @* Seccion tabla Usuario *@
     <div class="row">
-        <div class="col-md-12">
+
+        <div class="col-md-12 d-md-inline-block">
 
             @if (Model.Usuarios != null)
             {
@@ -95,7 +89,7 @@
                             <th>Fecha Nacimiento</th>
                             <th>CURP</th>
                             <th>Rol</th>
-                            <th class="col-2">Acciones</th>
+                            <th>Acciones</th>
 
                         </tr>
                     </thead>
@@ -145,9 +139,7 @@
                 </div>
             }
 
-
         </div>
-
     </div>
 </div>
 

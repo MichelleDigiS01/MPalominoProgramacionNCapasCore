@@ -4,13 +4,13 @@ namespace PL.Controllers
 {
     public class UsuarioController : Controller
     {
-        public IActionResult GetAll()
+        [HttpGet]
+        public IActionResult GetAll(string nombre = "", string apellidoPaterno = "", string apellidoMaterno = "")
         {
             ML.Usuario usuario = new ML.Usuario();
 
-            ML.Result result = BL.Usuario.GetAll();
-            
-            
+            ML.Result result = BL.Usuario.GetAllSP(nombre, apellidoPaterno, apellidoMaterno);
+
             if (result.Correct)
             {
                 usuario.Usuarios = result.Objects;
@@ -19,11 +19,11 @@ namespace PL.Controllers
             {
                 ViewBag.Mensaje = result.ErrorMessage;
             }
-
+            //Consulta todos los roles 
             ML.Result resultRols = new ML.Result();
 
             resultRols = BL.Rol.GetAll();
-            //Consulta todos los roles 
+
 
             if (resultRols.Correct)
             {
@@ -34,6 +34,37 @@ namespace PL.Controllers
             return View(usuario);
         }
 
+        [HttpPost]
+        public IActionResult GetAll(ML.Usuario usuario)
+        {
+            ML.Result result = BL.Usuario.GetAllSP(usuario.Nombre, usuario.ApellidoPaterno, usuario.ApellidoMaterno);
+
+            if (result.Correct)
+            {
+                usuario.Usuarios = result.Objects;
+            }
+            else
+            {
+                ViewBag.Mensaje = result.ErrorMessage;
+            }
+            //Consulta todos los roles 
+            ML.Result resultRols = new ML.Result();
+
+            resultRols = BL.Rol.GetAll();
+
+
+            if (resultRols.Correct)
+            {
+                usuario.Rol = new ML.Rol();
+                usuario.Rol.Rols = resultRols.Objects;
+            }
+
+            return View(usuario);
+        }
+
+
+
+
         [HttpGet]
         public ActionResult Form(int? IdUsuario)
         {
@@ -43,7 +74,7 @@ namespace PL.Controllers
 
             resultRols = BL.Rol.GetAll();
             //Consulta todos los roles 
-            
+
             if (resultRols.Correct)
             {
                 usuario.Rol = new ML.Rol();

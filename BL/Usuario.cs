@@ -1,7 +1,78 @@
-﻿namespace BL
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace BL
 {
     public class Usuario
     {
+
+        public static ML.Result GetAllSP(string nombre, string apellidoPaterno, string apellidoMaterno)
+        {
+            ML.Result result = new ML.Result();
+            try
+            {
+                using (DL.MpalominoProgramacionNcapasContext context = new DL.MpalominoProgramacionNcapasContext())
+                {
+                    // conexion, en donde voy a guardar la informacion , ejecutar el SP4
+
+
+                    var query = context.UsuarioGetAllDTO.FromSqlInterpolated($@"EXEC UsuarioGet {nombre}, {apellidoPaterno}, {apellidoMaterno}").ToList();
+
+
+
+
+                    // FromSqlRaw - SELECT
+
+                    // ExecuteSqlRaw   -INSERT UPDATE Y DELETE 
+
+                    if (query.Count > 0)
+                    {
+                        result.Objects = new List<object>();
+
+                        foreach (var usuarioObj in query)
+                        {
+                            ML.Usuario usuario = new ML.Usuario();
+
+                            usuario.IdUsuario = usuarioObj.IdUsuario;
+                            usuario.UserName = usuarioObj.UserName;
+                            usuario.Nombre = usuarioObj.UsuarioNombre;
+                            usuario.ApellidoPaterno = usuarioObj.ApellidoPaterno;
+                            usuario.ApellidoMaterno = usuarioObj.ApellidoMaterno;
+                            usuario.Email = usuarioObj.Email;
+                            usuario.Password = usuarioObj.Password;
+                            usuario.Sexo = usuarioObj.Sexo;
+                            usuario.Telefono = usuarioObj.Telefono;
+                            usuario.Celular = usuarioObj.Celular;
+                            usuario.FechaNacimiento = Convert.ToDateTime(usuarioObj.FechaNacimiento);
+                            usuario.Curp = usuarioObj.Curp;
+
+                            usuario.Rol = new ML.Rol();
+                            usuario.Rol.IdRol = usuarioObj.IdRol;
+                            usuario.Rol.Nombre = usuarioObj.RolNombre;
+
+                            result.Objects.Add(usuario);
+
+                        }
+
+                        result.Correct = true;
+                    }
+                    else
+                    {
+                        result.Objects = new List<object>();
+                        result.Correct = false;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
+
+            }
+
+            return result;
+
+        }
 
         public static ML.Result GetAll()
         {
