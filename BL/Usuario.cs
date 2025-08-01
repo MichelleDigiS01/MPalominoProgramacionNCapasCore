@@ -5,7 +5,7 @@ namespace BL
     public class Usuario
     {
 
-        public static ML.Result GetAllSP(string nombre, string apellidoPaterno, string apellidoMaterno, int idRol)
+        public static ML.Result GetAllSP(ML.Usuario usuario)
         {
             
             ML.Result result = new ML.Result();
@@ -20,10 +20,7 @@ namespace BL
 
                     //var query = context.UsuarioGetAllDTO.FromSqlInterpolated($@"EXEC UsuarioGetAllView {nombre}, {apellidoPaterno}, {apellidoMaterno}, {idRol}").ToList();
 
-                    var query = context.UsuarioGetAllDTO.FromSqlInterpolated($@"EXEC UsuarioGetAllDynamic {nombre}, {apellidoPaterno}, {apellidoMaterno}, {idRol}").ToList();
-
-
-
+                    var query = context.UsuarioGetAllDTO.FromSqlInterpolated($@"EXEC UsuarioGetAllDynamic {usuario.Nombre}, {usuario.ApellidoPaterno}, {usuario.ApellidoMaterno}, {usuario.Rol.IdRol}").ToList();
 
                     // FromSqlRaw - SELECT
 
@@ -35,26 +32,26 @@ namespace BL
 
                         foreach (var usuarioObj in query)
                         {
-                            ML.Usuario usuario = new ML.Usuario();
+                            ML.Usuario usuarios = new ML.Usuario();
 
-                            usuario.IdUsuario = usuarioObj.IdUsuario;
-                            usuario.UserName = usuarioObj.UserName;
-                            usuario.Nombre = usuarioObj.UsuarioNombre;
-                            usuario.ApellidoPaterno = usuarioObj.ApellidoPaterno;
-                            usuario.ApellidoMaterno = usuarioObj.ApellidoMaterno;
-                            usuario.Email = usuarioObj.Email;
-                            usuario.Password = usuarioObj.Password;
-                            usuario.Sexo = usuarioObj.Sexo;
-                            usuario.Telefono = usuarioObj.Telefono;
-                            usuario.Celular = usuarioObj.Celular;
-                            usuario.FechaNacimiento = Convert.ToDateTime(usuarioObj.FechaNacimiento);
-                            usuario.Curp = usuarioObj.Curp;
+                            usuarios.IdUsuario = usuarioObj.IdUsuario;
+                            usuarios.UserName = usuarioObj.UserName;
+                            usuarios.Nombre = usuarioObj.UsuarioNombre;
+                            usuarios.ApellidoPaterno = usuarioObj.ApellidoPaterno;
+                            usuarios.ApellidoMaterno = usuarioObj.ApellidoMaterno;
+                            usuarios.Email = usuarioObj.Email;
+                            usuarios.Password = usuarioObj.Password;
+                            usuarios.Sexo = usuarioObj.Sexo;
+                            usuarios.Telefono = usuarioObj.Telefono;
+                            usuarios.Celular = usuarioObj.Celular;
+                            usuarios.FechaNacimiento = Convert.ToDateTime(usuarioObj.FechaNacimiento);
+                            usuarios.Curp = usuarioObj.Curp;
 
-                            usuario.Rol = new ML.Rol();
-                            usuario.Rol.IdRol = usuarioObj.IdRol;
-                            usuario.Rol.Nombre = usuarioObj.RolNombre;
+                            usuarios.Rol = new ML.Rol();
+                            usuarios.Rol.IdRol = usuarioObj.IdRol;
+                            usuarios.Rol.Nombre = usuarioObj.RolNombre;
 
-                            result.Objects.Add(usuario);
+                            result.Objects.Add(usuarios);
 
                         }
 

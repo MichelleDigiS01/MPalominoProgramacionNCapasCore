@@ -17,7 +17,7 @@ namespace PL.Controllers
             usuario.Rol = new ML.Rol(); 
             usuario.Rol.IdRol = 0;
 
-            ML.Result result = BL.Usuario.GetAllSP(usuario.Nombre, usuario.ApellidoPaterno, usuario.ApellidoMaterno, usuario.Rol.IdRol);
+            ML.Result result = BL.Usuario.GetAllSP(usuario);
 
             if (result.Correct)
             {
@@ -46,20 +46,11 @@ namespace PL.Controllers
         public IActionResult GetAll(ML.Usuario usuario)
         {
             //condicion si vienen nullo
-            if (usuario.Nombre == null)
-            {
-                usuario.Nombre = "";
-            }
-            if (usuario.ApellidoPaterno == null)
-            {
-                usuario.ApellidoPaterno = "";
-            }
-            if (usuario.ApellidoMaterno == null)
-            {
-                usuario.ApellidoMaterno = "";
-            }
+            usuario.Nombre = usuario.Nombre ?? ""; 
+            usuario.ApellidoPaterno = usuario.ApellidoPaterno ?? ""; 
+            usuario.ApellidoMaterno = usuario.ApellidoMaterno ?? ""; 
 
-            ML.Result result = BL.Usuario.GetAllSP(usuario.Nombre, usuario.ApellidoPaterno, usuario.ApellidoMaterno, usuario.Rol.IdRol);
+            ML.Result result = BL.Usuario.GetAllSP(usuario);
 
             if (result.Correct)
             {
