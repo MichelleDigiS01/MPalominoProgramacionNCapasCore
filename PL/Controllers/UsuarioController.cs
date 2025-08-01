@@ -5,11 +5,18 @@ namespace PL.Controllers
     public class UsuarioController : Controller
     {
         [HttpGet]
-        public IActionResult GetAll(string nombre = "", string apellidoPaterno = "", string apellidoMaterno = "")
+        public IActionResult GetAll()
         {
             ML.Usuario usuario = new ML.Usuario();
 
-            ML.Result result = BL.Usuario.GetAllSP(nombre, apellidoPaterno, apellidoMaterno);
+
+            usuario.Nombre = "";
+            usuario.ApellidoPaterno = "";
+            usuario.ApellidoMaterno = "";
+            usuario.Rol = new ML.Rol(); 
+            usuario.Rol.IdRol = 0;
+
+            ML.Result result = BL.Usuario.GetAllSP(usuario.Nombre, usuario.ApellidoPaterno, usuario.ApellidoMaterno, usuario.Rol.IdRol);
 
             if (result.Correct)
             {
@@ -37,7 +44,21 @@ namespace PL.Controllers
         [HttpPost]
         public IActionResult GetAll(ML.Usuario usuario)
         {
-            ML.Result result = BL.Usuario.GetAllSP(usuario.Nombre, usuario.ApellidoPaterno, usuario.ApellidoMaterno);
+            //condicion si vienen nullo
+            if (usuario.Nombre == null)
+            {
+                usuario.Nombre = "";
+            }
+            if (usuario.ApellidoPaterno == null)
+            {
+                usuario.ApellidoPaterno = "";
+            }
+            if (usuario.ApellidoMaterno == null)
+            {
+                usuario.ApellidoMaterno = "";
+            }
+
+            ML.Result result = BL.Usuario.GetAllSP(usuario.Nombre, usuario.ApellidoPaterno, usuario.ApellidoMaterno, usuario.Rol.IdRol);
 
             if (result.Correct)
             {
