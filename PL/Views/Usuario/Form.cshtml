@@ -1,0 +1,150 @@
+﻿@model ML.Usuario
+@{
+    ViewData["Title"] = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+
+    @if (Model.IdUsuario > 0)
+    {
+        <h1>Formulario Actualizar</h1>
+    }
+    else
+    {
+        <h1>Formulario Agregar</h1>
+    }
+
+
+
+    @using (Html.BeginForm("Form", "Usuario", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+    {
+        <div class="row">
+
+            @*Parte del Datos Usuario*@
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header text-center">
+                        Datos Usuario
+                    </div>
+                    <div class="card-body">
+
+                        <div class="col-md-6 d-none">
+
+                            @Html.LabelFor(model => model.IdUsuario, new { @class = "" })
+                            @Html.TextBoxFor(model => model.IdUsuario, new { @class = "form-control hidden" })
+
+                            @* @Html.HiddenFor(model => model.Direccion.IdDireccion) *@
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mt-2">
+
+                                @Html.LabelFor(model => model.UserName)
+                                @Html.TextBoxFor(model => model.UserName, new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-6 mt-2">
+                                @Html.LabelFor(model => model.Password)
+                                @Html.TextBoxFor(model => model.Password, new { @class = "form-control" })
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mt-2">
+                                @Html.LabelFor(model => model.Nombre, new { @id = "lblNombre" })
+                                @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @id = "txtNombre" })
+
+                            </div>
+                            <div class="col-md-4 mt-2">
+
+                                @Html.LabelFor(model => model.ApellidoPaterno, "Apellido Paterno")
+                                @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control" })
+                            </div>
+
+                            <div class="col-md-4 mt-2">
+                                @Html.LabelFor(model => model.ApellidoMaterno, "Apellido Materno")
+                                @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control" })
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mt-2">
+
+                                @Html.LabelFor(model => model.Email)
+                                @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-6 mt-2">
+
+                                <label class="form-label d-block">Sexo</label>
+                                <div class="form-check form-check-inline">
+                                    @Html.RadioButtonFor(model => model.Sexo, "M ", new { @class = "form-check-input", id = "sexoM" })
+                                    <label class="form-check-label" for="sexoM">Masculino</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    @Html.RadioButtonFor(model => model.Sexo, "F ", new { @class = "form-check-input", id = "sexoF" })
+                                    <label class="form-check-label" for="sexoF">Femenino</label>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+
+                            <div class="col-md-6 mt-2">
+                                @Html.LabelFor(model => model.Telefono)
+                                @Html.TextBoxFor(model => model.Telefono, new { @class = "form-control" })
+                            </div>
+
+                            <div class="col-md-6 mt-2">
+
+                                @Html.LabelFor(model => model.Celular)
+                                @Html.TextBoxFor(model => model.Celular, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-4 mt-2">
+
+ 
+                                @Html.LabelFor(model => model.FechaNacimiento, "Fecha de Nacimiento")
+
+                                @Html.TextBox("FechaNacimiento", Model.FechaNacimiento.ToString("yyyy-MM-dd"), new { @class = "form-control", type = "date" })
+
+                            </div>
+                            <div class="col-md-4 mt-2">
+
+                                @Html.LabelFor(model => model.Curp)
+                                @Html.TextBoxFor(model => model.Curp, new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-4 mt-2">
+                                @Html.LabelFor(model => model.Rol.IdRol, "Rol")
+                                @Html.DropDownListFor(model => model.Rol.IdRol, new SelectList(Model.Rol.Rols, "IdRol", "Nombre"), "Seleccione un Rol", new { @class = "form-control" })
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="row">
+                    <div class="col-md-6 mt-3">
+
+                        <button type="submit" value="GuardarUsuario" name="Action" class="btn btn-success pl">Guardar</button>
+
+                        @Html.ActionLink("Regresar", "GetAll", "Usuario", new { IdUsuario = 0 }, new { @class = "btn btn-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+
+</div>
+

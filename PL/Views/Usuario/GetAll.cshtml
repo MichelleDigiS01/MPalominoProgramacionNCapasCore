@@ -1,0 +1,202 @@
+﻿@model ML.Usuario
+
+
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Usuarios</h1>
+
+<div class="container">
+
+
+    <div class="row">
+        <div class="col-6">
+            <button id="btnBusqueda" class="btn btn-info w-100">Busqueda</button>
+
+        </div>
+        <div class="col-6">
+            <button type="button" class="btn btn-primary w-100">Carga Masiva</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class=" col-md-12">
+
+            <div class="card mt-2" id="busquedaForm" style="display: none;">
+                <h5 class="card-header">Busqueda</h5>
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col-md-3 mt-2">
+
+                            @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", placeholder = "Nombre", @id = "txtNombre" })
+
+                        </div>
+                        <div class="col-md-3 mt-2">
+
+                            @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control", placeholder = "Apellido Paterno", @id = "txtApellidoPaterno" })
+                        </div>
+
+                        <div class="col-md-3 mt-2">
+
+                            @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control", placeholder = "Apellido Materno", @id = "txtApellidoMaterno" })
+
+                        </div>
+
+                        <div class="col-md-3 mt-2">
+
+                            @Html.DropDownListFor(model => model.Rol.IdRol, new SelectList(Model.Rol.Rols, "IdRol", "Nombre"), "Seleccione un Rol", new { @class = "form-control" })
+
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-6 mt-2 offset-md-5">
+
+
+                        <button id="" class="btn btn-outline-success">Buscar</button>
+
+                        <button id="btnCancelar" class="btn btn-outline-danger">Cancelar</button>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class=" col-md-12 mt-2">
+            @Html.ActionLink("+", "Form", "Usuario", new { IdUsuario = 0 }, new { @class = "btn btn-success" })
+        </div>
+
+
+
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+
+            @if (Model.Usuarios != null)
+            {
+                <table class="table table-hover text-center">
+                    <thead>
+                        <tr>
+                            <th>Id Usuario</th>
+                            <th>Username</th>
+                            <th>Nombre</th>
+                            <th>Apellido Paterno</th>
+                            <th>Apellido Materno</th>
+                            <th>Email</th>
+                            <th>Password</th>
+                            <th>Sexo</th>
+                            <th>Telefono</th>
+                            <th>Celular</th>
+                            <th>Fecha Nacimiento</th>
+                            <th>CURP</th>
+                            <th>Rol</th>
+                            <th class="col-2">Acciones</th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (ML.Usuario usuario in Model.Usuarios)
+                        {
+                            <tr>
+
+                                <td>@usuario.IdUsuario</td>
+                                <td>@usuario.UserName</td>
+                                <td>@usuario.Nombre</td>
+                                <td>@usuario.ApellidoPaterno</td>
+                                <td>@usuario.ApellidoMaterno</td>
+                                <td>@usuario.Email</td>
+                                <td>@usuario.Password</td>
+                                <td>@usuario.Sexo</td>
+                                <td>@usuario.Telefono</td>
+                                <td>@usuario.Celular</td>
+                                <td>@usuario.FechaNacimiento</td>
+                                <td>@usuario.Curp</td>
+                                <td>@usuario.Rol.Nombre</td>
+
+
+                                <td>
+                                    <a class="btn btn-warning" href="@Url.Action("Form", "Usuario", new { IdUsuario = usuario.IdUsuario })">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+                                        </svg>
+                                    </a>
+                                    <button type="button" class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="UsuarioDelete(@usuario.IdUsuario, '@usuario.Nombre')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-danger">
+                    No existen registros para la tabla Usuario. Error: @ViewBag.Mensaje
+                </div>
+            }
+
+
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Eliminar Usuario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Estas seguro que deseas eliminar al Usuario: <span id="NombreUsuario"></span>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <a id="btnEliminarUsuario" href="" class="btn btn-danger">Eliminar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* @Scripts.Render("~/bundles/jquery") *@
+<script src="~/lib/jquery/dist/jquery.js"></script>  @* Cualquier linea de estas manda a llamar a JS *@
+
+<script>
+    function UsuarioDelete(IdUsuario, NombreUsuario) {
+        $('#NombreUsuario').text(NombreUsuario)
+        $('#btnEliminarUsuario').attr('href','@Url.Action("Delete", "Usuario")' + '?IdUsuario=' + IdUsuario)
+    }
+
+    $(document).ready(function(){
+        $('#btnBusqueda').click(function(){
+            $('#busquedaForm').slideToggle();
+        });
+
+        $('#btnCancelar').click(function(){
+            $('#busquedaForm').slideUp();
+        });
+
+    });
+
+</script>
+
+
+
+
+
+
