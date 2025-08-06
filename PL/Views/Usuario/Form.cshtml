@@ -15,8 +15,8 @@
         <h1>Formulario Agregar</h1>
     }
 
-<form name="Form" onsubmit="return validateForm()" onreset="resetErrors()">
-    @using (Html.BeginForm("Form", "Usuario", FormMethod.Post, new { @enctype = "multipart/form-data", @class="" }))
+
+        @using (Html.BeginForm("Form", "Usuario", FormMethod.Post, new { @enctype = "multipart/form-data", onsubmit = "return validateForm()" }))
     {
 
         
@@ -75,7 +75,6 @@
                                     <span></span>
                                 </div>
                                 <div class="col-md-6 mt-2">
-
                                     <label class="form-label d-block">Sexo</label>
                                     <div class="form-check form-check-inline">
                                         @Html.RadioButtonFor(model => model.Sexo, "M ", new { @class = "form-check-input", id = "sexoM" })
@@ -85,6 +84,7 @@
                                         @Html.RadioButtonFor(model => model.Sexo, "F ", new { @class = "form-check-input", id = "sexoF" })
                                         <label class="form-check-label" for="sexoF">Femenino</label>
                                     </div>
+                                    <span></span>
                                 </div>
                             </div>
 
@@ -124,8 +124,8 @@
                                 </div>
                                 <div class="col-md-4 mt-2">
                                     @Html.LabelFor(model => model.Rol.IdRol, "Rol")
-                                    @Html.DropDownListFor(model => model.Rol.IdRol, new SelectList(Model.Rol.Rols, "IdRol", "Nombre"), "Seleccione un Rol", new { @class = "form-control" })
-
+                                @Html.DropDownListFor(model => model.Rol.IdRol, new SelectList(Model.Rol.Rols, "IdRol", "Nombre"), "Seleccione un Rol", new { @class = "form-control", @id = "ddlRol", onchange = " return validarRol(this)" })
+                                <span></span>
                                 </div>
                             </div>
 
@@ -148,34 +148,76 @@
                 </div>
             </div>
        
-
     }
- </form>
 </div>
 
 
 
+<script src="~/lib/jquery/dist/jquery.js"></script>
 <script>
 
-     
-    
+
+    function validateForm() {
+    let isValid = true;
+
+    // Valida cada campo
+    const campos = [
+        { id: "txtUserName", mensaje: "Nombre de usuario obligatorio", validador: sinEspacios },
+        { id: "txtPassword", mensaje: "Contraseña obligatoria", validador: validarPassword },
+        { id: "txtNombre", mensaje: "Nombre obligatorio", validador: soloLetras },
+        { id: "txtApellidoPaterno", mensaje: "Apellido paterno obligatorio", validador: soloLetras },
+        { id: "txtApellidoMaterno", mensaje: "Apellido materno obligatorio", validador: soloLetras },
+        { id: "txtTelefono", mensaje: "Teléfono obligatorio", validador: soloNumeros },
+        { id: "txtCelular", mensaje: "Celular obligatorio", validador: soloNumeros },
+        { id: "txtEmail", mensaje: "Email obligatorio", validador: validarCorreo },
+        { id: "txtCURP", mensaje: "CURP obligatorio", validador: validarCURP },
+        { id: "ddlRol", mensaje: "Seleccione un Rol", validador: validarRol },
+
+
+        ];
+
+    campos.forEach(campo => {
+        let input = document.getElementById(campo.id);
+        let div = $(input).closest("div");
+        let span = div.children("span");
+
+        if (input.value.trim() == "") {
+            $(input).css("border", "2px solid red");
+            span.text(campo.mensaje).addClass("text-danger");
+            isValid = false;
+        } else {
+            if (campo.validador && !campo.validador(input)) {
+                isValid = false; 
+            } else {
+                $(input).css("border", "2px solid green");
+                span.text("").removeClass("text-danger");
+            }
+        }
+    });
+
+    return isValid;
+    }
 
     function soloLetras(input) {
         var div = $(input).closest("div");
         var span = div.children("span")
         
-
         if(event.type == "blur"){
-            var regex = /^[a-zA-Z\s]*$/;
-            if (regex.test($(input).val())){
+            if($(input).val().trim() == ""){
+              $(input).css("border", "2px solid orange");
+              span.text("Recuerda no dejar el espacio vacio").addClass("text-warning")
+              return false
+            }
+              var regex = /^[a-zA-Z\s]*$/;
+              if (regex.test($(input).val())){
                 $(input).css("border", "2px solid green");
                 span.text("").removeClass("text-danger")
                 return true;
-            } else {
+              } else {
                 $(input).css("border", "2px solid red");
                 span.text("No se aceptan numeros").addClass("text-danger")
                 return false;
-            }
+              }
         }else{
             var regex = /^[a-zA-Z\s]*$/;
             if (regex.test(event.key)) {
@@ -194,6 +236,12 @@
         var span = div.children("span")
 
         if(event.type == "blur"){
+            if($(input).val().trim() == ""){
+              $(input).css("border", "2px solid orange");
+              span.text("Recuerda no dejar el espacio vacio").addClass("text-warning")
+              return false
+            }
+
             var regex = /^[a-zA-Z0-9]*$/; // acepta mayúsculas, minúsculas y numeros
             if (regex.test($(input).val())){
                  $(input).css("border", "2px solid green");
@@ -201,7 +249,7 @@
                   return true;
             } else {
                   $(input).css("border", "2px solid red");
-                  span.text("No se aceptan esapacios").addClass("text-danger")
+                  span.text("No se aceptan espacios").addClass("text-danger")
 
                   return false;
             }
@@ -221,12 +269,13 @@
         }
     }
     function soloNumeros(input) {
+
         var div = $(input).closest("div");
         var span = div.children("span")
 
-        if(event.type == "blur"){
-          var regex = /^[0-9]*$/; // acepta mayúsculas, minúsculas y numeros
-            if (regex.test($(input).val())){
+        if(event.type == "keypress"){
+          var regex = /^[0-9]*$/; // acepta solo numeros
+                if (regex.test(event.key)) {
                  $(input).css("border", "2px solid green");
                   span.text("").removeClass("text-danger")
                   return true;
@@ -237,8 +286,13 @@
                   return false;
             }
         }else{
-           var regex = /^[0-9]*$/; // acepta mayúsculas, minúsculas y numeros
-                if (regex.test(event.key)) {
+                if($(input).val().trim() == ""){
+                  $(input).css("border", "2px solid orange");
+                  span.text("Recuerda no dejar el espacio vacio").addClass("text-warning")
+                  return false
+                }
+           var regex = /^[0-9]*$/; // acepta solo numeros
+                    if (regex.test($(input).val())){
                      $(input).css("border", "2px solid green");
                       span.text("").removeClass("text-danger")
                       return true;
@@ -255,6 +309,12 @@
         var span = div.children("span")
 
         if(event.type == "blur"){
+
+            if($(input).val().trim() == ""){
+              $(input).css("border", "2px solid orange");
+              span.text("Recuerda no dejar el espacio vacio").addClass("text-warning")
+              return false
+            }
             var regex = /^[a-zA-Z0-9]*$/;
             if (regex.test($(input).val())){
                 $(input).css("border", "2px solid green");
@@ -303,18 +363,30 @@
         var span = div.children("span")
         var regex = /^\b[A-Z0-9._%-]+@@[A-Z.-]+\.[A-Z]{2,4}\b$/i
        if(regex.test($(input).val())){
-
            $(input).css("border", "2px solid green");
            span.text("").removeClass("text-danger")
            return true
        }else{
-
            $(input).css("border", "2px solid red");
            span.text("Debe contener @@").addClass("text-danger")
             return false;
        }
     }
+    
+    function validarRol(select) {
+        var div = $(select).closest("div");
+        var span = div.children("span");
 
+         if ($(select).val() == 0) {
+            $(select).css("border", "2px solid red");
+            span.text("Seleccione un Rol").addClass("text-danger");
+            return false;
+          }else {
+            $(select).css("border", "2px solid green");
+            span.text("").removeClass("text-danger");
+            return true;
+        }
+    }
 
 </script>
 

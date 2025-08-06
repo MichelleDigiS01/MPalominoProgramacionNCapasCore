@@ -145,19 +145,10 @@ namespace PL.Controllers
             {
                 ML.Result result = BL.Usuario.Add(usuario);
 
-                //if (result.Correct)
-                //{
-                //    int IdUsuario = (int)result.Object;
-
-                //    if (IdUsuario > 0)
-                //    {
-                //        usuario.IdUsuario = IdUsuario;
-
-                //        ML.Result resultDireccionAdd = BL.Direccion.Add(usuario);
-                //    }
-
-
-                //}
+                if (result.Correct)
+                {
+                    
+                }
 
             }
             else  //Update
