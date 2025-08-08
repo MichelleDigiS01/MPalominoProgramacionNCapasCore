@@ -40,6 +40,7 @@ namespace ML
         
         [Required(ErrorMessage = "Este campo no puede estar vacio")]
         [MaxLength(50)]
+        [RegularExpression(@"^[a-zA-Z0-9._%-]*$", ErrorMessage = "Ingresa una contraseña minimo con una Minus, una Mayus, un número y un caracter especial")]
         public string? Password { get; set; }
         
         [Required(ErrorMessage = "Este campo no puede estar vacio")]
@@ -56,6 +57,7 @@ namespace ML
         public string? Celular { get; set; }
         
         [Required(ErrorMessage = "Este campo no puede estar vacio")]
+        [RegularExpression(@"^(0[1-9]|[12][0-9]|3[01])[/](0[1-9]|1[0-2])[/](19|20)\d{2}$", ErrorMessage = "Ingresa una Fecha Valida dd/mm/yyyy")]
         public string? FechaNacimiento { get; set; }
         
         [Required(ErrorMessage = "Este campo no puede estar vacio")]

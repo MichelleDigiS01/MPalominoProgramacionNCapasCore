@@ -3,6 +3,7 @@
     ViewData["Title"] = "Form";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<link href="~/css/jquery-ui.css" rel="stylesheet" />
 
 <div class="container">
 
@@ -118,11 +119,10 @@
 
                                 <div class="col-md-4 mt-2">
 
-
                                     @Html.LabelFor(model => model.FechaNacimiento, "Fecha de Nacimiento")
 
-                                    @Html.TextBoxFor(model => model.FechaNacimiento,  new { @class = "form-control", type = "date" })
-
+                                    @Html.TextBoxFor(model => model.FechaNacimiento,  new { @class = "form-control", type = "text", @id = "txtFechaNacimiento", onblur= "return validarFecha(this, event)"})
+                                    <span></span>
                                     @Html.ValidationMessageFor(model => model.FechaNacimiento, "", new { @class = "text-danger " })
                                 </div>
                                 <div class="col-md-4 mt-2">
@@ -165,12 +165,25 @@
 
 
 <script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery/dist/jquery-ui.js"></script>
+
 
 <script>
+    DatePicker();
+    function DatePicker(){
+        $("#txtFechaNacimiento").datepicker();
+            $("#txtFechaNacimiento").datepicker({
+               dateFormat: 'dd-mm-yy',
+               changeMonth: true,
+               changeYear: true,
+               yearRange: '1930:2025'
+            });
+    }
+
         $(document).ready(function() {
         $("#form").on("submit", function(event) {
             var correct = true;
-            if (!validarSexo() || !sinEspaciosThis($("#txtUserName")) || !validarPasswordThis($("#txtPassword")) || !soloLetrasThis($("#txtNombre")) || !soloLetrasThis($("#txtApellidoPaterno")) || !soloLetrasThis($("#txtApellidoMaterno")) || !validarCorreo($("#txtEmail")) ||!soloNumerosThis($("#txtTelefono")) || !soloNumerosThis($("#txtCelular")) ||  !validarCURP($("#txtCURP")) || !validarRol($("#ddlRol"))  ){
+            if (!sinEspaciosThis($("#txtUserName")) || !validarPasswordThis($("#txtPassword")) || !soloLetrasThis($("#txtNombre")) || !soloLetrasThis($("#txtApellidoPaterno")) || !soloLetrasThis($("#txtApellidoMaterno")) || !validarCorreo($("#txtEmail")) ||!soloNumerosThis($("#txtTelefono")) || !soloNumerosThis($("#txtCelular")) ||  !validarCURP($("#txtCURP")) || !validarRol($("#ddlRol")) || !validarSexo() || !validarFecha($("#txtFechaNacimiento"))){
                 correct = false;
             }
             if (!correct) {
@@ -308,7 +321,7 @@
             return true;
         } else {
             $(input).css("border", "2px solid red");
-             span.text("No se permiten espacios").addClass("text-danger")
+             span.text("Ingresa una contraseña minimo con una Minus, una Mayus, un número y un caracter especial").addClass("text-danger")
             return false;
         }
     }
@@ -323,7 +336,7 @@
            return true
        }else{
            $(input).css("border", "2px solid red");
-           span.text("Ingresa una CURP valida y escribe en Mayuscula").addClass("text-danger")
+           span.text("Ingresa una CURP válida y escribe en Mayuscula").addClass("text-danger")
             return false;
        }
     }
@@ -337,7 +350,7 @@
            return true
        }else{
            $(input).css("border", "2px solid red");
-           span.text("Debe contener @@").addClass("text-danger")
+           span.text(" Ejemplo de correo válido: Example_1234.%_@@gmail.com").addClass("text-danger")
             return false;
        }
     }
@@ -373,6 +386,22 @@
                 $(this).css("outline", "none");
             });
             return true;
+        }
+    }
+
+    function validarFecha(input){
+        var div = $(input).closest("div");
+        var span = div.children("span").first();
+        var regex = /^(0[1-9]|[12][0-9]|3[01])[/](0[1-9]|1[0-2])[/](19|20)\d{2}$/;
+
+        if(regex.test($(input).val())){
+            $(input).css("border", "2px solid green");
+            span.text("").removeClass("text-danger");
+            return true;
+        } else {
+            $(input).css("border", "2px solid red");
+            span.text("Ingresa una fecha válida (dd/mm/yyyy)").addClass("text-danger");
+            return false;
         }
     }
 

@@ -104,7 +104,7 @@ namespace PL.Controllers
 
                 if (result.Correct)
                 {
-                    usuario = (ML.Usuario)result.Objects[0]; //unboxing y accede al primer elemnto de esa lista
+                    usuario = (ML.Usuario)result.Objects[0]; //unboxing y accede al primer elemento de esa lista
 
                     if (usuario.Rol == null)
                     {
@@ -114,7 +114,6 @@ namespace PL.Controllers
 
                 }
             }
-            ViewBag.FechaNacimientoFormateada = Convert.ToDateTime(usuario.FechaNacimiento);
 
             return View(usuario);
 
