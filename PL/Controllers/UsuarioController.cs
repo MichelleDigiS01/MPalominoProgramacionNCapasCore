@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Drawing.Drawing2D;
 
 namespace PL.Controllers
 {
@@ -93,45 +94,27 @@ namespace PL.Controllers
                 usuario.Rol = new ML.Rol();
                 usuario.Rol.Rols = resultRols.Objects;
             }
-            //ML.Result resultEstados = new ML.Result();
-            //resultEstados = BL.Estado.GetAll();
-
-            //if (resultEstados.Correct)
-            //{
-            //    if (usuario.Direccion == null)
-            //    {
-            //        usuario.Direccion = new ML.Direccion();
-            //        usuario.Direccion.Colonia = new ML.Colonia();
-            //        usuario.Direccion.Colonia.Municipio = new ML.Municipio();
-            //        usuario.Direccion.Colonia.Municipio.Estado = new ML.Estado();
-            //    }
-
-            //    usuario.Direccion.Colonia.Municipio.Estado.Estados = resultEstados.Objects;
-
-            //    ML.Result resultMunicipios = BL.Municipio.GetByIdEstado(usuario.Direccion.Colonia.Municipio.Estado.IdEstado);
-            //    usuario.Direccion.Colonia.Municipio.Municipios = resultMunicipios.Objects;
-
-            //    ML.Result resultColonias = BL.Colonia.GetByIdMunicipio(usuario.Direccion.Colonia.Municipio.IdMunicipio);
-            //    usuario.Direccion.Colonia.Colonias = resultColonias.Objects;
-            //}
-
+            
 
             if (IdUsuario > 0) //----UPDATE-----
             {
 
                 //obtener el usuario por id
-                ML.Result result = BL.Usuario.GetById(IdUsuario.Value);//bien
+                ML.Result result = BL.Usuario.GetByIdSP(IdUsuario.Value);//bien
 
                 if (result.Correct)
                 {
-                    usuario = (ML.Usuario)result.Object;//unboxing
+                    usuario = (ML.Usuario)result.Objects[0]; //unboxing y accede al primer elemnto de esa lista
 
+                    if (usuario.Rol == null)
+                    {
+                        usuario.Rol = new ML.Rol();
+                    }
                     usuario.Rol.Rols = resultRols.Objects;
-
 
                 }
             }
-            ViewBag.FechaNacimientoFormateada = usuario.FechaNacimiento.ToString("yyyy-MM-dd");
+            ViewBag.FechaNacimientoFormateada = Convert.ToDateTime(usuario.FechaNacimiento);
 
             return View(usuario);
 
@@ -140,32 +123,42 @@ namespace PL.Controllers
         public ActionResult Form(ML.Usuario usuario) //Add, update
         {
 
+            bool formulario = ModelState.IsValid;
 
-            if (usuario.IdUsuario == 0) //Add
+            if (formulario)
             {
-                ML.Result result = BL.Usuario.Add(usuario);
-
-                if (result.Correct)
+                if (usuario.IdUsuario == 0) //Add
                 {
-                    
+
+                ML.Result resultaAdd = BL.Usuario.AddSP(usuario);
+
+                }else{  //Update
+                ML.Result resultUpdate = BL.Usuario.UpdateSP(usuario);
+
                 }
-
+                Console.WriteLine("Formulario valido");
+                
+                return RedirectToAction("GetAll");
             }
-            else  //Update
+
+            ML.Result result = BL.Rol.GetAll();
+            if (result.Correct)
             {
-                ML.Result resultUpdate = BL.Usuario.Update(usuario);
-
+               usuario.Rol.Rols = result.Objects;
             }
 
 
-            return RedirectToAction("GetAll");
+            return View(usuario);
+            
+
         }
 
         public ActionResult Delete(int IdUsuario) //Delete
         {
             // Primero se elimina las imagenes del usuario
 
-            ML.Result resultDelete = BL.Usuario.Delete(IdUsuario);
+            ML.Result resultDelete = BL.Usuario.DeleteSP(IdUsuario);
+            
             if (resultDelete.Correct)
             {
                 ViewBag.Mensaje = "Usuario eliminado correctamente";

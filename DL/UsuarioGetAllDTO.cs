@@ -28,7 +28,7 @@ namespace DL
 
         public string? Celular { get; set; }
 
-        public DateTime? FechaNacimiento { get; set; }
+        public string? FechaNacimiento { get; set; }
 
         public string? Curp { get; set; }
 

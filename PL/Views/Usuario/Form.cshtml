@@ -16,7 +16,7 @@
     }
 
 
-        @using (Html.BeginForm("Form", "Usuario", FormMethod.Post, new { @enctype = "multipart/form-data", onsubmit = "return validateForm()" }))
+        @using (Html.BeginForm("Form", "Usuario", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "form" }))
     {
 
         
@@ -35,13 +35,15 @@
                                 <div class="col-md-6 mt-2">
 
                                     @Html.LabelFor(model => model.UserName)
-                                    @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", onblur = "return sinEspacios(this)", onkeypress = "return sinEspacios(this, event)", @id = "txtUserName" })
+                                    @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", onblur = "return sinEspaciosThis(this)", onkeypress = "return sinEspaciosEvent(this, event)", @id = "txtUserName" })
                                     <span></span>
+                                    @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger " })
                                 </div>
                                 <div class="col-md-6 mt-2">
                                     @Html.LabelFor(model => model.Password)
-                                    @Html.TextBoxFor(model => model.Password, new { @class = "form-control", onblur = "return validarPassword(this)", onkeypress = "return validarPassword(this, event)", @id = "txtPassword" })
+                                    @Html.TextBoxFor(model => model.Password, new { @class = "form-control", onblur = "return validarPasswordThis(this)", onkeypress = "return validarPasswordEvent(this, event)", @id = "txtPassword" })
                                     <span></span>
+                                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger " })
                                 </div>
 
                             </div>
@@ -49,21 +51,23 @@
                             <div class="row">
                                 <div class="col-md-4 mt-2">
                                     @Html.LabelFor(model => model.Nombre, new { @id = "lblNombre" })
-                                    @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", onblur = "return soloLetras(this)", onkeypress = "return soloLetras(this, event)", @id = "txtNombre" })
+                                    @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", onblur = "return soloLetrasThis(this)", onkeypress = "return soloLetrasEvent(this, event)", @id = "txtNombre" })
                                     <span></span>
-
+                                    @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger " })
                                 </div>
                                 <div class="col-md-4 mt-2">
 
                                     @Html.LabelFor(model => model.ApellidoPaterno, "Apellido Paterno")
-                                    @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control", onblur = "return soloLetras(this)", onkeypress = "return soloLetras(this, event)", @id = "txtApellidoPaterno" })
+                                    @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control", onblur = "return soloLetrasThis(this)", onkeypress = "return soloLetrasEvent(this, event)", @id = "txtApellidoPaterno" })
                                     <span></span>
+                                    @Html.ValidationMessageFor(model => model.ApellidoPaterno, "", new { @class = "text-danger " })
                                 </div>
 
                                 <div class="col-md-4 mt-2">
                                     @Html.LabelFor(model => model.ApellidoMaterno, "Apellido Materno")
-                                    @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control", onblur = "return soloLetras(this)", onkeypress = "return soloLetras(this, event)", @id = "txtApellidoMaterno" })
+                                    @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control", onblur = "return soloLetrasThis(this)", onkeypress = "return soloLetrasEvent(this, event)", @id = "txtApellidoMaterno" })
                                     <span></span>
+                                    @Html.ValidationMessageFor(model => model.ApellidoMaterno, "", new { @class = "text-danger " })
                                 </div>
                             </div>
 
@@ -73,6 +77,7 @@
                                     @Html.LabelFor(model => model.Email)
                                     @Html.TextBoxFor(model => model.Email, new { @class = "form-control", onblur = "return validarCorreo(this)", @id = "txtEmail" })
                                     <span></span>
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger " })
                                 </div>
                                 <div class="col-md-6 mt-2">
                                     <label class="form-label d-block">Sexo</label>
@@ -85,6 +90,7 @@
                                         <label class="form-check-label" for="sexoF">Femenino</label>
                                     </div>
                                     <span></span>
+                                    @Html.ValidationMessageFor(model => model.Sexo, "", new { @class = "text-danger " })
                                 </div>
                             </div>
 
@@ -93,15 +99,17 @@
 
                                 <div class="col-md-6 mt-2">
                                     @Html.LabelFor(model => model.Telefono)
-                                    @Html.TextBoxFor(model => model.Telefono, new { @class = "form-control", onblur = "return soloNumeros(this)", onkeypress = "return soloNumeros(this, event)", @id = "txtTelefono" })
+                                    @Html.TextBoxFor(model => model.Telefono, new { @class = "form-control", onblur = "return soloNumerosThis(this)", onkeypress = "return soloNumerosEvent(this, event)", @id = "txtTelefono" })
                                     <span></span>
+                                    @Html.ValidationMessageFor(model => model.Telefono, "", new { @class = "text-danger " })
                                 </div>
 
                                 <div class="col-md-6 mt-2">
 
                                     @Html.LabelFor(model => model.Celular)
-                                    @Html.TextBoxFor(model => model.Celular, new { @class = "form-control", onblur = "return soloNumeros(this)", onkeypress = "return soloNumeros(this, event)", @id = "txtCelular" })
+                                    @Html.TextBoxFor(model => model.Celular, new { @class = "form-control", onblur = "return soloNumerosThis(this)", onkeypress = "return soloNumerosEvent(this, event)", @id = "txtCelular" })
                                     <span></span>
+                                    @Html.ValidationMessageFor(model => model.Celular, "", new { @class = "text-danger " })
                                 </div>
 
 
@@ -113,19 +121,22 @@
 
                                     @Html.LabelFor(model => model.FechaNacimiento, "Fecha de Nacimiento")
 
-                                    @Html.TextBox("FechaNacimiento", Model.FechaNacimiento.ToString("yyyy-MM-dd"), new { @class = "form-control", type = "date" })
+                                    @Html.TextBoxFor(model => model.FechaNacimiento,  new { @class = "form-control", type = "date" })
 
+                                    @Html.ValidationMessageFor(model => model.FechaNacimiento, "", new { @class = "text-danger " })
                                 </div>
                                 <div class="col-md-4 mt-2">
 
                                     @Html.LabelFor(model => model.Curp)
                                     @Html.TextBoxFor(model => model.Curp, new { @class = "form-control", onblur = "return validarCURP(this, event)", @id = "txtCURP" })
                                     <span></span>
+                                @Html.ValidationMessageFor(model => model.Curp, "", new { @class = "text-danger " })
                                 </div>
                                 <div class="col-md-4 mt-2">
                                     @Html.LabelFor(model => model.Rol.IdRol, "Rol")
-                                @Html.DropDownListFor(model => model.Rol.IdRol, new SelectList(Model.Rol.Rols, "IdRol", "Nombre"), "Seleccione un Rol", new { @class = "form-control", @id = "ddlRol", onchange = " return validarRol(this)" })
-                                <span></span>
+                                    @Html.DropDownListFor(model => model.Rol.IdRol, new SelectList(Model.Rol.Rols, "IdRol", "Nombre"), "Seleccione un Rol", new { @class = "form-control", @id = "ddlRol", onchange = " return validarRol(this)" })
+                                    <span></span>
+                                    @Html.ValidationMessageFor(model => model.Rol.IdRol, "", new { @class = "text-danger " })
                                 </div>
                             </div>
 
@@ -154,213 +165,171 @@
 
 
 <script src="~/lib/jquery/dist/jquery.js"></script>
+
 <script>
-
-
-    function validateForm() {
-    let isValid = true;
-
-    // Valida cada campo
-    const campos = [
-        { id: "txtUserName", mensaje: "Nombre de usuario obligatorio", validador: sinEspacios },
-        { id: "txtPassword", mensaje: "Contraseña obligatoria", validador: validarPassword },
-        { id: "txtNombre", mensaje: "Nombre obligatorio", validador: soloLetras },
-        { id: "txtApellidoPaterno", mensaje: "Apellido paterno obligatorio", validador: soloLetras },
-        { id: "txtApellidoMaterno", mensaje: "Apellido materno obligatorio", validador: soloLetras },
-        { id: "txtTelefono", mensaje: "Teléfono obligatorio", validador: soloNumeros },
-        { id: "txtCelular", mensaje: "Celular obligatorio", validador: soloNumeros },
-        { id: "txtEmail", mensaje: "Email obligatorio", validador: validarCorreo },
-        { id: "txtCURP", mensaje: "CURP obligatorio", validador: validarCURP },
-        { id: "ddlRol", mensaje: "Seleccione un Rol", validador: validarRol },
-
-
-        ];
-
-    campos.forEach(campo => {
-        let input = document.getElementById(campo.id);
-        let div = $(input).closest("div");
-        let span = div.children("span");
-
-        if (input.value.trim() == "") {
+        $(document).ready(function() {
+        $("#form").on("submit", function(event) {
+            var correct = true;
+            if (!validarSexo() || !sinEspaciosThis($("#txtUserName")) || !validarPasswordThis($("#txtPassword")) || !soloLetrasThis($("#txtNombre")) || !soloLetrasThis($("#txtApellidoPaterno")) || !soloLetrasThis($("#txtApellidoMaterno")) || !validarCorreo($("#txtEmail")) ||!soloNumerosThis($("#txtTelefono")) || !soloNumerosThis($("#txtCelular")) ||  !validarCURP($("#txtCURP")) || !validarRol($("#ddlRol"))  ){
+                correct = false;
+            }
+            if (!correct) {
+                event.preventDefault();
+            }
+        });
+      });
+    function soloLetrasThis(input) {
+        var div = $(input).closest("div");
+        var span = div.children("span").first();
+        var regex = /^[a-zA-Z\s]*$/;
+        if($(input).val() === ""){
+          $(input).css("border", "2px solid orange");
+          span.text("Recuerda no dejar el espacio vacio").addClass("text-warning")
+          return false
+        }
+        if (regex.test($(input).val())){
+            $(input).css("border", "2px solid green");
+            span.text("").removeClass("text-danger");
+            return true;
+        }else {
             $(input).css("border", "2px solid red");
-            span.text(campo.mensaje).addClass("text-danger");
-            isValid = false;
-        } else {
-            if (campo.validador && !campo.validador(input)) {
-                isValid = false; 
-            } else {
+            return false;
+          }
+        }
+    function soloLetrasEvent(input,event) { 
+        var div = $(input).closest("div");
+        var span = div.children("span").first();
+        var regex = /^[a-zA-Z\s]*$/;
+          if (regex.test(event.key)) {
+              $(input).css("border", "2px solid green");
+              span.text("").removeClass("text-danger")
+              return true;
+          } else {
+              $(input).css("border", "2px solid red");
+              span.text("No se aceptan numeros").addClass("text-danger")
+              return false;
+          }
+        }
+    function sinEspaciosThis(input) {
+        var div = $(input).closest("div");
+        var span = div.children("span").first();
+        var regex = /^[a-zA-Z0-9]*$/; 
+            if($(input).val() === ""){
+          $(input).css("border", "2px solid orange");
+          span.text("Recuerda no dejar el espacio vacio").addClass("text-warning")
+          return false
+        }
+        if (regex.test($(input).val())){
+            $(input).css("border", "2px solid green");
+            span.text("").removeClass("text-danger");
+            return true;
+        }else {
+            $(input).css("border", "2px solid red");
+            return false;
+          }
+        }
+
+    function sinEspaciosEvent(input, event) {
+        var div = $(input).closest("div");
+        var span = div.children("span").first();
+        var regex = /^[a-zA-Z0-9]*$/;
+           if (regex.test(event.key)) {
+                $(input).css("border", "2px solid green");
+                 span.text("").removeClass("text-danger")
+                 return true;
+           } else {
+                 $(input).css("border", "2px solid red");
+                 span.text("No se aceptan espacios").addClass("text-danger")
+                 return false;
+           }
+        }
+    function soloNumerosThis(input) {
+        var div = $(input).closest("div");
+        var span = div.children("span").first();
+        var regex = /^[0-9]*$/; 
+       if($(input).val() === ""){
+          $(input).css("border", "2px solid orange");
+          span.text("Recuerda no dejar el espacio vacio").addClass("text-warning")
+          return false
+        }
+            if (regex.test($(input).val())){
                 $(input).css("border", "2px solid green");
                 span.text("").removeClass("text-danger");
-            }
+                return true;
+            }else {
+                $(input).css("border", "2px solid red");
+                return false;
+          }
         }
-    });
-
-    return isValid;
-    }
-
-    function soloLetras(input) {
+    function soloNumerosEvent(input, event) {
         var div = $(input).closest("div");
-        var span = div.children("span")
+        var span = div.children("span").first();
+        var regex = /^[0-9]*$/; // acepta solo numeros
         
-        if(event.type == "blur"){
-            if($(input).val().trim() == ""){
-              $(input).css("border", "2px solid orange");
-              span.text("Recuerda no dejar el espacio vacio").addClass("text-warning")
-              return false
-            }
-              var regex = /^[a-zA-Z\s]*$/;
-              if (regex.test($(input).val())){
-                $(input).css("border", "2px solid green");
-                span.text("").removeClass("text-danger")
-                return true;
-              } else {
-                $(input).css("border", "2px solid red");
-                span.text("No se aceptan numeros").addClass("text-danger")
-                return false;
-              }
-        }else{
-            var regex = /^[a-zA-Z\s]*$/;
-            if (regex.test(event.key)) {
-                $(input).css("border", "2px solid green");
-                span.text("").removeClass("text-danger")
-                return true;
+        if (regex.test(event.key)) {
+            $(input).css("border", "2px solid green");
+            span.text("").removeClass("text-danger")
+            return true;
             } else {
-                $(input).css("border", "2px solid red");
-                span.text("No se aceptan numeros").addClass("text-danger")
-                return false;
+            $(input).css("border", "2px solid red");
+            span.text("Solo se permiten numeros").addClass("text-danger")
+
+            return false;
             }
         }
-    }
-    function sinEspacios(input) {
+    function validarPasswordThis(input){
         var div = $(input).closest("div");
-        var span = div.children("span")
-
-        if(event.type == "blur"){
-            if($(input).val().trim() == ""){
-              $(input).css("border", "2px solid orange");
-              span.text("Recuerda no dejar el espacio vacio").addClass("text-warning")
-              return false
+        var span = div.children("span").first();
+        var regex = /^[a-zA-Z0-9._%-]*$/;
+        
+        if($(input).val() === ""){
+          $(input).css("border", "2px solid orange");
+          span.text("Recuerda no dejar el espacio vacio").addClass("text-warning")
+          return false
             }
-
-            var regex = /^[a-zA-Z0-9]*$/; // acepta mayúsculas, minúsculas y numeros
-            if (regex.test($(input).val())){
-                 $(input).css("border", "2px solid green");
-                  span.text("").removeClass("text-danger")
-                  return true;
-            } else {
-                  $(input).css("border", "2px solid red");
-                  span.text("No se aceptan espacios").addClass("text-danger")
-
-                  return false;
-            }
-         
-        }else{
-        var regex = /^[a-zA-Z0-9]*$/; // acepta mayúsculas, minúsculas y numeros
-            if (regex.test(event.key)) {
-                 $(input).css("border", "2px solid green");
-                  span.text("").removeClass("text-danger")
-                  return true;
-            } else {
-                  $(input).css("border", "2px solid red");
-                  span.text("No se aceptan esapacios").addClass("text-danger")
-
-                  return false;
-            }
-        }
-    }
-    function soloNumeros(input) {
-
-        var div = $(input).closest("div");
-        var span = div.children("span")
-
-        if(event.type == "keypress"){
-          var regex = /^[0-9]*$/; // acepta solo numeros
-                if (regex.test(event.key)) {
-                 $(input).css("border", "2px solid green");
-                  span.text("").removeClass("text-danger")
-                  return true;
-            } else {
-                  $(input).css("border", "2px solid red");
-                  span.text("Solo se permiten numeros").addClass("text-danger")
-
-                  return false;
-            }
-        }else{
-                if($(input).val().trim() == ""){
-                  $(input).css("border", "2px solid orange");
-                  span.text("Recuerda no dejar el espacio vacio").addClass("text-warning")
-                  return false
-                }
-           var regex = /^[0-9]*$/; // acepta solo numeros
-                    if (regex.test($(input).val())){
-                     $(input).css("border", "2px solid green");
-                      span.text("").removeClass("text-danger")
-                      return true;
-                } else {
-                      $(input).css("border", "2px solid red");
-                      span.text("Solo se permiten numeros").addClass("text-danger")
-
-                      return false;
-                }
-        }
-    }
-    function validarPassword(input){
-        var div = $(input).closest("div");
-        var span = div.children("span")
-
-        if(event.type == "blur"){
-
-            if($(input).val().trim() == ""){
-              $(input).css("border", "2px solid orange");
-              span.text("Recuerda no dejar el espacio vacio").addClass("text-warning")
-              return false
-            }
-            var regex = /^[a-zA-Z0-9]*$/;
             if (regex.test($(input).val())){
                 $(input).css("border", "2px solid green");
-                span.text("").removeClass("text-danger")
+                span.text("").removeClass("text-danger");
                 return true;
-            } else {
+            }else {
                 $(input).css("border", "2px solid red");
-                 span.text("No se permiten espacios").addClass("text-danger")
                 return false;
-            }
-        }else{
-            var regex = /^[a-zA-Z0-9]*$/;
+          }
+        }
             
-            if (regex.test(event.key)) {
-                $(input).css("border", "2px solid green");
-                span.text("").removeClass("text-danger")
-                return true;
-            } else {
-                $(input).css("border", "2px solid red");
-                 span.text("No se permiten espacios").addClass("text-danger")
-                return false;
-            }
+    function validarPasswordEvent(input, event){
+        var div = $(input).closest("div");
+        var span = div.children("span").first();
+        var regex = /^[a-zA-Z0-9._%-]*$/;
+
+        if (regex.test(event.key)) {
+            $(input).css("border", "2px solid green");
+            span.text("").removeClass("text-danger")
+            return true;
+        } else {
+            $(input).css("border", "2px solid red");
+             span.text("No se permiten espacios").addClass("text-danger")
+            return false;
         }
-        
     }
+       
     function validarCURP(input){
         var div = $(input).closest("div");
-        var span = div.children("span")
-
+        var span = div.children("span").first();
         var regex = /^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/
-       
        if(regex.test($(input).val())){
            $(input).css("border", "2px solid green");
            span.text("").removeClass("text-danger")
            return true
        }else{
-
            $(input).css("border", "2px solid red");
            span.text("Ingresa una CURP valida y escribe en Mayuscula").addClass("text-danger")
-           
             return false;
        }
     }
     function validarCorreo(input){
         var div = $(input).closest("div");
-        var span = div.children("span")
+        var span = div.children("span").first();
         var regex = /^\b[A-Z0-9._%-]+@@[A-Z.-]+\.[A-Z]{2,4}\b$/i
        if(regex.test($(input).val())){
            $(input).css("border", "2px solid green");
@@ -375,15 +344,34 @@
     
     function validarRol(select) {
         var div = $(select).closest("div");
-        var span = div.children("span");
+        var span = div.children("span").first();
 
-         if ($(select).val() == 0) {
+         if ($(select).val() === "") {
             $(select).css("border", "2px solid red");
             span.text("Seleccione un Rol").addClass("text-danger");
             return false;
           }else {
             $(select).css("border", "2px solid green");
             span.text("").removeClass("text-danger");
+            return true;
+        }
+    }
+    function validarSexo() {
+        var radios = $("input[name='Sexo']");
+        var div = radios.closest("div.col-md-6");
+        var span = div.children("span").first();
+
+        if (radios.filter(":checked").length === 0) {
+            span.text("Debe seleccionar una opción").addClass("text-danger");
+            radios.each(function () {
+                $(this).css("outline", "2px solid red");
+            });
+            return false;
+        } else {
+            span.text("").removeClass("text-danger");
+            radios.each(function () {
+                $(this).css("outline", "none");
+            });
             return true;
         }
     }

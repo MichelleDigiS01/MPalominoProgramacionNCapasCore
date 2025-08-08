@@ -15,10 +15,9 @@ namespace BL
                 {
                     // conexion, en donde voy a guardar la informacion , ejecutar el SP
 
+                    var query = context.UsuarioGetAllDTO.FromSqlInterpolated($@"EXEC UsuarioGet {usuario.Nombre}, {usuario.ApellidoPaterno}, {usuario.ApellidoMaterno}, {usuario.Rol.IdRol}").ToList();
 
-                    //var query = context.UsuarioGetAllDTO.FromSqlInterpolated($@"EXEC UsuarioGet {usuario.Nombre}, {usuario.ApellidoPaterno}, {usuario.ApellidoMaterno}, {usuario.Rol.IdRol}").ToList();
-
-                    var query = context.UsuarioGetAllDTO.FromSqlInterpolated($@"EXEC UsuarioGetAllView {usuario.Nombre}, {usuario.ApellidoPaterno}, {usuario.ApellidoMaterno}, {usuario.Rol.IdRol}").ToList();
+                    //var query = context.UsuarioGetAllDTO.FromSqlInterpolated($@"EXEC UsuarioGetAllView {usuario.Nombre}, {usuario.ApellidoPaterno}, {usuario.ApellidoMaterno}, {usuario.Rol.IdRol}").ToList();
 
                     //var query = context.UsuarioGetAllDTO.FromSqlInterpolated($@"EXEC UsuarioGetAllDynamic {usuario.Nombre}, {usuario.ApellidoPaterno}, {usuario.ApellidoMaterno}, {usuario.Rol.IdRol}").ToList();
 
@@ -44,7 +43,7 @@ namespace BL
                             usuarios.Sexo = usuarioObj.Sexo;
                             usuarios.Telefono = usuarioObj.Telefono;
                             usuarios.Celular = usuarioObj.Celular;
-                            usuarios.FechaNacimiento = Convert.ToDateTime(usuarioObj.FechaNacimiento);
+                            usuarios.FechaNacimiento = Convert.ToString(usuarioObj.FechaNacimiento);
                             usuarios.Curp = usuarioObj.Curp;
 
                             usuarios.Rol = new ML.Rol();
@@ -76,6 +75,172 @@ namespace BL
 
         }
 
+        public static ML.Result AddSP(ML.Usuario usuario)
+        {
+
+            ML.Result result = new ML.Result();
+            try
+            {
+                using (DL.MpalominoProgramacionNcapasContext context = new DL.MpalominoProgramacionNcapasContext())
+                {
+                    // conexion, en donde voy a guardar la informacion , ejecutar el SP
+                    // ExecuteSqlRaw   -INSERT UPDATE Y DELETE 
+                    var query = context.Database.ExecuteSqlInterpolated($@"EXEC UsuarioAdd {usuario.UserName},{usuario.Nombre}, {usuario.ApellidoPaterno}, {usuario.ApellidoMaterno},{usuario.Email}, {usuario.Password}, {usuario.Sexo}, {usuario.Telefono}, {usuario.Celular}, {usuario.FechaNacimiento}, {usuario.Curp}, {usuario.Rol.IdRol}");
+
+                    if (query > 0)
+                    {
+                        result.Correct = true;
+                    }
+                    else
+                    {
+                        
+                        result.Correct = false;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
+
+            }
+
+            return result;
+
+        }
+
+        public static ML.Result UpdateSP(ML.Usuario usuario)
+        {
+
+            ML.Result result = new ML.Result();
+            try
+            {
+                using (DL.MpalominoProgramacionNcapasContext context = new DL.MpalominoProgramacionNcapasContext())
+                {
+                    // conexion, en donde voy a guardar la informacion , ejecutar el SP
+                    // ExecuteSqlRaw   -INSERT UPDATE Y DELETE 
+                    var query = context.Database.ExecuteSqlInterpolated($@"EXEC UsuarioUpdate {usuario.IdUsuario},{usuario.UserName},{usuario.Nombre}, {usuario.ApellidoPaterno}, {usuario.ApellidoMaterno},{usuario.Email}, {usuario.Password}, {usuario.Sexo}, {usuario.Telefono}, {usuario.Celular}, {usuario.FechaNacimiento}, {usuario.Curp}, {usuario.Rol.IdRol}");
+
+                    if (query > 0)
+                    {
+                        result.Correct = true;
+                    }
+                    else
+                    {
+
+                        result.Correct = false;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
+
+            }
+
+            return result;
+
+        }
+
+        public static ML.Result GetByIdSP(int IdUsuario)
+        {
+
+            ML.Result result = new ML.Result();
+            try
+            {
+                using (DL.MpalominoProgramacionNcapasContext context = new DL.MpalominoProgramacionNcapasContext())
+                {
+                    // conexion, en donde voy a guardar la informacion , ejecutar el SP
+
+                    var query = context.UsuarioGetAllDTO.FromSqlInterpolated($@"EXEC UsuarioGetById {IdUsuario}").ToList();
+
+
+                    if (query.Count > 0)
+                    {
+                        result.Objects = new List<object>();
+
+                        foreach (var usuarioObj in query)
+                        {
+                            ML.Usuario usuarios = new ML.Usuario();
+
+                            usuarios.IdUsuario = usuarioObj.IdUsuario;
+                            usuarios.UserName = usuarioObj.UserName;
+                            usuarios.Nombre = usuarioObj.UsuarioNombre;
+                            usuarios.ApellidoPaterno = usuarioObj.ApellidoPaterno;
+                            usuarios.ApellidoMaterno = usuarioObj.ApellidoMaterno;
+                            usuarios.Email = usuarioObj.Email;
+                            usuarios.Password = usuarioObj.Password;
+                            usuarios.Sexo = usuarioObj.Sexo;
+                            usuarios.Telefono = usuarioObj.Telefono;
+                            usuarios.Celular = usuarioObj.Celular;
+                            usuarios.FechaNacimiento = Convert.ToString(usuarioObj.FechaNacimiento);
+                            usuarios.Curp = usuarioObj.Curp;
+
+                            usuarios.Rol = new ML.Rol();
+                            usuarios.Rol.IdRol = usuarioObj.IdRol;
+                            usuarios.Rol.Nombre = usuarioObj.RolNombre;
+
+                            result.Objects.Add(usuarios);
+
+                        }
+
+                        result.Correct = true;
+                    }
+                    else
+                    {
+                        result.Objects = new List<object>();
+                        result.Correct = false;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
+
+            }
+
+            return result;
+
+        }
+
+        public static ML.Result DeleteSP(int IdUsuario)
+        {
+
+            ML.Result result = new ML.Result();
+            try
+            {
+                using (DL.MpalominoProgramacionNcapasContext context = new DL.MpalominoProgramacionNcapasContext())
+                {
+                    // conexion, en donde voy a guardar la informacion , ejecutar el SP
+
+                    var query = context.Database.ExecuteSqlInterpolated($@"EXEC UsuarioDelete {IdUsuario}");
+
+                    if (query > 0)
+                    {
+                        result.Correct = true;
+                    }
+                    else
+                    {
+                        result.Correct = false;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
+
+            }
+
+            return result;
+
+        }
         public static ML.Result GetAll()
         {
             ML.Result result = new ML.Result();
@@ -121,7 +286,7 @@ namespace BL
                             usuario.Sexo = usuarioobj.Sexo;
                             usuario.Telefono = usuarioobj.Telefono;
                             usuario.Celular  = usuarioobj.Celular;
-                            usuario.FechaNacimiento = Convert.ToDateTime(usuarioobj.FechaNacimiento);
+                            usuario.FechaNacimiento = Convert.ToString(usuarioobj.FechaNacimiento);
                             usuario.Curp = usuarioobj.Curp;
 
                             usuario.Rol = new ML.Rol();
@@ -170,7 +335,7 @@ namespace BL
                     usuarioDL.Sexo = usuario.Sexo;
                     usuarioDL.Telefono = usuario.Telefono;
                     usuarioDL.Celular = usuario.Celular;
-                    usuarioDL.FechaNacimiento = usuario.FechaNacimiento;
+                    usuarioDL.FechaNacimiento = Convert.ToDateTime(usuario.FechaNacimiento);
                     usuarioDL.Curp = usuario.Curp;
                     usuarioDL.IdRol = usuario.Rol.IdRol;
 
@@ -245,7 +410,7 @@ namespace BL
                         usuario.Sexo = ResultQuery.Sexo;
                         usuario.Telefono = ResultQuery.Telefono;
                         usuario.Celular = ResultQuery.Celular;
-                        usuario.FechaNacimiento = Convert.ToDateTime(ResultQuery.FechaNacimiento);
+                        usuario.FechaNacimiento = Convert.ToString(ResultQuery.FechaNacimiento);
                         usuario.Curp = ResultQuery.Curp;
 
                         usuario.Rol = new ML.Rol();//INSTANCIA PARA PODER TRAER EL DATO DEL IDROL
@@ -292,7 +457,7 @@ namespace BL
                         query.Sexo = usuario.Sexo;
                         query.Telefono = usuario.Telefono;
                         query.Celular = usuario.Celular;
-                        query.FechaNacimiento = usuario.FechaNacimiento;
+                        query.FechaNacimiento = Convert.ToDateTime(usuario.FechaNacimiento);
                         query.Curp = usuario.Curp;
                         query.IdRol = usuario.Rol.IdRol;
 
