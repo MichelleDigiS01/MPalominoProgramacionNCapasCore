@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "GetAll";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string sessionValue = Context.Session.GetString("rutaCorrectos");
 }
 
 <h1>Usuarios</h1>
@@ -16,13 +17,16 @@
 
         </div>
         <div class="col-6">
-            <button type="button" class="btn btn-primary w-100">Carga Masiva</button>
+            <button id="btnCargaMasiva" type="button" class="btn btn-primary w-100">Carga Masiva</button>
         </div>
     </div>
 
+    @await Html.PartialAsync("_Modal", Model)
 
-    @using (Html.BeginForm("GetAll", "Usuario", FormMethod.Post))
+    @using (Html.BeginForm("GetAll", "Usuario", FormMethod.Post, new { @enctype = "multipart/form-data" }))
     {
+
+        //forulario de busqueda abierta
         <div class="row">
             <div class=" col-md-12">
                 <div class="card mt-2" id="busquedaForm" style="display: none;">
@@ -47,6 +51,7 @@
                         <div class="col-md-6 mt-2 offset-md-5">
                             <button type="submit" class="btn btn-outline-success">Buscar</button>
 
+
                             <button type="reset" id="btnCancelar" class="btn btn-outline-danger">Cancelar</button>
 
                         </div>
@@ -57,6 +62,50 @@
 
             </div>
 
+
+        </div>
+
+        //fromulario carga masiva
+        <div class="row">
+            <div class=" col-md-12">
+                <div class="card mt-2" id="formularioCargaMasiva" style="display: none;">
+                    <h5 class="card-header">Carga Masiva</h5>
+                    <div class="card-body">
+
+                        <div class="row">
+
+                            <div class="col-md-12 mt-2 offset-5">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="tipoArchivo" id="fileTxt" value="txt">
+                                    <label class="form-check-label" for="fileTxt">TXT</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="tipoArchivo" id="fileExcel" value="excel">
+                                    <label class="form-check-label" for="fileExcel">Excel</label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 mt-2 offset-4">
+
+                                    <input type="file" id="archivoInput" name="archivo" />
+                                    <div id="errorArchivo" class="text-danger mt-2" style="display: none;"></div>
+
+                                    <button type="submit" class="btn btn-primary">Validar</button>
+
+
+                                    @if (Context.Session.GetString("rutaCorrectos") != null)
+                                    {
+                                        @Html.ActionLink("Guardar", "GuardarCargaMasiva", "Usuario", new{}, new { @class = "btn btn-primary" })
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class=" col-md-12 mt-2">
                 @Html.ActionLink("Agregar Usuario", "Form", "Usuario", new { IdUsuario = 0 }, new { @class = "btn btn-success" })
             </div>
@@ -64,6 +113,7 @@
         </div>
 
     }
+
 
 
     @* Seccion tabla Usuario *@
@@ -90,8 +140,8 @@
                             <th>Celular</th>
                             <th>Fecha Nacimiento</th>
                             <th>CURP</th>
-                            
-                            
+
+
 
                         </tr>
                     </thead>
@@ -126,10 +176,10 @@
                                 <td>@usuario.Celular</td>
                                 <td>@usuario.FechaNacimiento</td>
                                 <td>@usuario.Curp</td>
-                                
 
 
-                                
+
+
                             </tr>
                         }
                     </tbody>
@@ -147,7 +197,7 @@
 </div>
 
 
-<!-- Modal -->
+<!-- Modal Eliminar -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -175,18 +225,52 @@
         $('#btnEliminarUsuario').attr('href','@Url.Action("Delete", "Usuario")' + '?IdUsuario=' + IdUsuario)
     }
 
-    $(document).ready(function(){
-        $('#btnBusqueda').click(function(){
-            $('#busquedaForm').slideToggle();
+        $(document).ready(function () {
+        // Mostrar/ocultar formulario de búsqueda
+        $('#btnBusqueda').click(function () {
+            $('#formularioCargaMasiva').slideUp(); // Oculta el otro formulario
+            $('#busquedaForm').slideToggle();      // Alterna el actual
         });
 
-        $('#btnCancelar').click(function(){
+        // Cancelar búsqueda
+        $('#btnCancelar').click(function () {
             $('#busquedaForm').slideUp();
+        });
+
+        // Mostrar/ocultar formulario de carga masiva
+        $('#btnCargaMasiva').click(function () {
+            $('#busquedaForm').slideUp();              // Oculta el otro formulario
+            $('#formularioCargaMasiva').slideToggle(); // Alterna el actual
+        });
+
+        $('#archivoInput').on('change', function () {
+            const archivo = this.files[0];
+            const tipo = $('input[name="tipoArchivo"]:checked').val();
+            const errorDiv = $('#errorArchivo');
+
+            errorDiv.hide().text(''); // Limpia mi mensaje anterior
+
+            if (!archivo) return; // No hace nada si no hay archivo
+
+            const extension = archivo.name.split('.').pop().toLowerCase();
+
+            const esValido = (tipo === 'txt' && extension === 'txt') ||
+                             (tipo === 'excel' && ['xls', 'xlsx'].includes(extension));
+
+            if (!esValido) {
+                errorDiv.text('El tipo de archivo no coincide con la opción seleccionada.').show();
+                this.value = ''; // Limpia el input para forzar nueva selección
+            }
         });
 
     });
 
 </script>
+
+
+
+
+
 
 
 
