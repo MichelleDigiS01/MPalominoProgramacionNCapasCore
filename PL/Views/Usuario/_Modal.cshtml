@@ -15,49 +15,64 @@
                     <div>
                         @if (Model.Errores.Count > 0)
                         {
-                          <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Errores</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var error in Model.Errores)
-                                {
+                            <h2>Errores</h2>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Errores</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var error in Model.Errores)
+                                    {
                                         string[] errores = error.ToString().Split("|");
                                         string linea = errores.Length > 0 ? errores[0] : "N/A";
-                                        
+
                                         <tr>
-                                        <th>@linea </th>
-                                        <td class="text-danger">
-                                                @for(int i = 1; i < errores.Length; i++)
+                                            <th>@linea </th>
+                                            <td class="text-danger">
+                                                @for (int i = 1; i < errores.Length; i++)
                                                 {
                                                     <span>
                                                         @errores[i]
                                                     </span>
                                                     <br />
                                                 }
-                                            
 
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>  
+
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
                         }
-                        
+
                     </div>
 
                     @if (Model.Correctos != null)
                     {
                         <h2>Correctos</h2>
-                        @foreach (var correcto in Model.Correctos)
-                        {
-                            <p>@correcto</p>
 
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Registro</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var correcto in Model.Correctos)
+                                {
+                                    var partes = correcto.ToString().Split('|');
+                                    <tr>
+                                        <th>@partes[0]</th>
+                                        <td>@partes[1]</td>
+                                    </tr>
+                                }
 
-                        }
+                            </tbody>
+                        </table>
                     }
                 </div>
             </div>

@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\excel\" />
     <Folder Include="wwwroot\txt\errores\" />
     <Folder Include="wwwroot\txt\correctos\" />
   </ItemGroup>

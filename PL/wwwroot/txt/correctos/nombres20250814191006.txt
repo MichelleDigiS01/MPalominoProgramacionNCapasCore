@@ -1,3 +1,0 @@
-Nombre|ApellidoPaterno|ApellidoMaterno|UserName|Correo|PassWord|Sexo|Telefono|Celular|FechaNacimiento|CURP|Rol
-Andrea|Lopez|Ramírez|andrea.lopez|andrea.lopez@example.com|Andr3@2025|F|5551234567|5612345678|15/07/1992|PAGM010428HMCLMCA6|1
-Carlos|Martínez|Gómez|carlos.mg|carlos.mg@example.com|C@rl0sM2025|M|5552345678|5613456789|22/03/2001|MAGC880322HDFRZR05|2

@@ -1,13 +1,68 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Data;
+using System.Data.OleDb;
 
 namespace BL
 {
     public class Usuario
     {
+        public static ML.Result Excel(string connectionString)
+        {
+            ML.Result result = new ML.Result();
+
+            try
+            {
+                using (OleDbConnection context = new OleDbConnection(connectionString))
+                {
+                    OleDbCommand oleDbCommand = new OleDbCommand();
+                    oleDbCommand.Connection = context;
+                    oleDbCommand.CommandText = "SELECT * FROM [Sheet1$]";
+                    context.Open();
+                    OleDbDataAdapter oleDbDataAdapter = new OleDbDataAdapter(oleDbCommand);
+                    DataTable dataTable = new DataTable();
+                    oleDbDataAdapter.Fill(dataTable);
+
+                    if (dataTable.Rows.Count > 0)
+                    {
+                        result.Objects = new List<object>();
+                        foreach (DataRow row in dataTable.Rows)
+                        {
+                            ML.Usuario usuario = new ML.Usuario();
+                            usuario.Rol = new ML.Rol();
+
+
+                            usuario.Nombre = row[0].ToString();
+                            usuario.ApellidoPaterno = row[1].ToString();
+                            usuario.ApellidoMaterno = row[2].ToString();
+                            usuario.UserName = row[3].ToString();
+                            usuario.Email = row[4].ToString();
+                            usuario.Password = row[5].ToString();
+                            usuario.Sexo = row[6].ToString();
+                            usuario.Telefono = row[7].ToString();
+                            usuario.Celular = row[8].ToString();
+                            usuario.FechaNacimiento = row[9].ToString();
+                            usuario.Curp = row[10].ToString();
+                            usuario.Rol.IdRol = Convert.ToInt32(row[11]);
+
+                            result.Objects.Add(usuario);
+                        }
+                        result.Correct = true;
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                result.ErrorMessage = ex.Message;
+                result.Correct = false;
+            }
+
+            return result;
+        }
 
         public static ML.Result GetAllSP(ML.Usuario usuario)
         {
-            
+
             ML.Result result = new ML.Result();
             try
             {
@@ -93,7 +148,7 @@ namespace BL
                     }
                     else
                     {
-                        
+
                         result.Correct = false;
                     }
                 }
@@ -285,7 +340,7 @@ namespace BL
                             usuario.Password = usuarioobj.Password;
                             usuario.Sexo = usuarioobj.Sexo;
                             usuario.Telefono = usuarioobj.Telefono;
-                            usuario.Celular  = usuarioobj.Celular;
+                            usuario.Celular = usuarioobj.Celular;
                             usuario.FechaNacimiento = Convert.ToString(usuarioobj.FechaNacimiento);
                             usuario.Curp = usuarioobj.Curp;
 

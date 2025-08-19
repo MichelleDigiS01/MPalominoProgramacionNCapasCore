@@ -94,9 +94,9 @@
                                     <button type="submit" class="btn btn-primary">Validar</button>
 
 
-                                    @if (Context.Session.GetString("rutaCorrectos") != null)
+                                    @if (Context.Session.GetString("rutaCorrectos") != null || Context.Session.GetString("rutaCorrectosExcel") != null)
                                     {
-                                        @Html.ActionLink("Guardar", "GuardarCargaMasiva", "Usuario", new{}, new { @class = "btn btn-primary" })
+                                        @Html.ActionLink("Guardar", "GuardarCargaMasiva", "Usuario", new{}, new { @class = "btn btn-success" })
                                     }
 
                                 </div>
